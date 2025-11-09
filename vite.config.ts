@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ command }) => {
   return {
     plugins: [react()],
-    // 開発環境では '/'、本番環境では '/sanae-voice-app/'
-    base: command === 'build' ? '/sanae-voice-app/' : '/',
+    // 開発環境では '/'、本番環境では '/voice-app/'
+    base: command === 'build' ? '/voice-app/' : '/',
   };
 });

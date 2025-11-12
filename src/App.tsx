@@ -34,6 +34,26 @@ function App() {
       src: `${import.meta.env.BASE_URL}audio/voice-02.mp3`,
       title: 'さにゃえだにゃん',
     },
+    {
+      id: '03',
+      src: `${import.meta.env.BASE_URL}audio/voice-03.mp3`,
+      title: 'たーめーのさにゃえだにゃん',
+    },
+    {
+      id: '04',
+      src: `${import.meta.env.BASE_URL}audio/voice-04.mp3`,
+      title: '撫でてほしいな',
+    },
+    {
+      id: '05',
+      src: `${import.meta.env.BASE_URL}audio/voice-05.mp3`,
+      title: 'さなえじゃないよさにゃえだにゃん',
+    },
+    {
+      id: '06',
+      src: `${import.meta.env.BASE_URL}audio/voice-06.mp3`,
+      title: 'もえもえきゅん',
+    },
   ];
 
   // 関連リンク

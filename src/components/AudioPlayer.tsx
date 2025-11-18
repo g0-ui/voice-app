@@ -1,18 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import {
-  Box,
-  IconButton,
-  HStack,
-  VStack,
-  Text,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
-import { RepeatIcon } from '@chakra-ui/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRepeat, faVolumeHigh, faBackwardStep, faForwardStep, faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 
 interface Track {
   id: string;
@@ -37,14 +25,6 @@ const AudioPlayer = ({
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  const bgGradient = useColorModeValue(
-    'linear-gradient(135deg, #ff6b9d 0%, #ffc3e0 100%)',
-    'linear-gradient(135deg, #e6005f 0%, #ff6b9d 100%)'
-  );
-
-  const textColor = useColorModeValue('white', 'white');
-  const iconColor = useColorModeValue('white', 'white');
 
   // 再生/一時停止の切り替え
   const togglePlay = useCallback(() => {
@@ -95,7 +75,8 @@ const AudioPlayer = ({
   }, []);
 
   // シークバーの操作
-  const handleSeek = useCallback((value: number) => {
+  const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
     if (audioRef.current) {
       audioRef.current.currentTime = value;
       setCurrentTime(value);
@@ -103,7 +84,8 @@ const AudioPlayer = ({
   }, []);
 
   // 音量の変更
-  const handleVolumeChange = useCallback((value: number) => {
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
     if (audioRef.current) {
       audioRef.current.volume = value;
       setVolume(value);
@@ -128,6 +110,7 @@ const AudioPlayer = ({
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrackIndex]);
 
   // オーディオイベントの設定
@@ -156,7 +139,7 @@ const AudioPlayer = ({
   }, [handleTrackEnd]);
 
   return (
-    <VStack gap={6} width="100%">
+    <div className="audio-player">
       {/* 非表示のオーディオ要素 */}
       <audio
         ref={audioRef}
@@ -164,132 +147,86 @@ const AudioPlayer = ({
         preload="metadata"
       />
 
-      {/* 現在再生中の曲 */}
-      <Box
-        width="100%"
-        padding={6}
-        background={bgGradient}
-        borderRadius="xl"
-        textAlign="center"
-      >
-        <Text fontSize="2xl" fontWeight="bold" color={textColor}>
+      {/* アルバムアートエリア */}
+      <div className="album-art-section">
+        <div className="album-art">
+          <span className="album-art-icon">🎵</span>
+        </div>
+        {/* 現在再生中の曲タイトル */}
+        <h2 className="track-title">
           {playlist[currentTrackIndex]?.title || 'No Track'}
-        </Text>
-      </Box>
+        </h2>
+      </div>
 
       {/* シークバーと時間表示 */}
-      <Box width="100%">
-        <Slider
-          aria-label="seek-slider"
+      <div className="seek-section">
+        <div className="time-display">
+          <span className="time-text">{formatTime(currentTime)}</span>
+          <span className="time-text">{formatTime(duration)}</span>
+        </div>
+        <input
+          type="range"
+          className="seek-slider"
           value={currentTime}
           min={0}
           max={duration || 0}
           onChange={handleSeek}
-          focusThumbOnChange={false}
-        >
-          <SliderTrack bg="gray.200" h="6px">
-            <SliderFilledTrack bg="pink.500" />
-          </SliderTrack>
-          <SliderThumb boxSize={4} bg="pink.500" />
-        </Slider>
-        <HStack justify="space-between" mt={2}>
-          <Text fontSize="sm" color="gray.500">
-            {formatTime(currentTime)}
-          </Text>
-          <Text fontSize="sm" color="gray.500">
-            {formatTime(duration)}
-          </Text>
-        </HStack>
-      </Box>
+          aria-label="Seek slider"
+        />
+      </div>
 
       {/* コントロールボタン */}
-      <HStack gap={4} justifyContent="center">
-        <IconButton
-          aria-label="Previous track"
-          icon={<FaStepBackward />}
+      <div className="controls">
+        <button
+          className="control-button"
           onClick={playPrevious}
-          colorScheme="pink"
-          size="lg"
-          isRound
-          _hover={{
-            transform: 'scale(1.1)',
-            boxShadow: '0 5px 15px rgba(255, 107, 157, 0.4)',
-          }}
-          transition="all 0.2s"
-        />
+          aria-label="Previous track"
+        >
+          <FontAwesomeIcon icon={faBackwardStep} />
+        </button>
 
-        <IconButton
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-          icon={isPlaying ? <FaPause /> : <FaPlay />}
+        <button
+          className="control-button play-button"
           onClick={togglePlay}
-          colorScheme="pink"
-          size="lg"
-          isRound
-          w="70px"
-          h="70px"
-          fontSize="2xl"
-          _hover={{
-            transform: 'scale(1.1)',
-            boxShadow: '0 5px 15px rgba(255, 107, 157, 0.4)',
-          }}
-          transition="all 0.2s"
-        />
+          aria-label={isPlaying ? 'Pause' : 'Play'}
+        >
+          <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+        </button>
 
-        <IconButton
-          aria-label="Next track"
-          icon={<FaStepForward />}
+        <button
+          className="control-button"
           onClick={playNext}
-          colorScheme="pink"
-          size="lg"
-          isRound
-          _hover={{
-            transform: 'scale(1.1)',
-            boxShadow: '0 5px 15px rgba(255, 107, 157, 0.4)',
-          }}
-          transition="all 0.2s"
-        />
+          aria-label="Next track"
+        >
+          <FontAwesomeIcon icon={faForwardStep} />
+        </button>
 
-        <IconButton
-          aria-label="Toggle repeat"
-          icon={<RepeatIcon />}
+        <button
+          className={`control-button repeat-button ${isRepeat ? 'active' : 'inactive'}`}
           onClick={toggleRepeat}
-          colorScheme="pink"
-          variant={isRepeat ? 'solid' : 'outline'}
-          size="lg"
-          isRound
-          opacity={isRepeat ? 1 : 0.6}
-          _hover={{
-            transform: 'scale(1.1)',
-            boxShadow: isRepeat
-              ? '0 5px 15px rgba(255, 107, 157, 0.6)'
-              : '0 5px 15px rgba(255, 107, 157, 0.4)',
-          }}
-          transition="all 0.2s"
-          color={isRepeat ? iconColor : 'pink.500'}
-        />
-      </HStack>
+          aria-label="Toggle repeat"
+        >
+          <FontAwesomeIcon icon={faRepeat} />
+        </button>
+      </div>
 
       {/* 音量コントロール */}
-      <Box width="100%" mt={4}>
-        <Text fontSize="sm" color="gray.500" mb={2}>
-          Volume
-        </Text>
-        <Slider
-          aria-label="volume-slider"
+      <div className="volume-section">
+        <label className="volume-icon">
+          <FontAwesomeIcon icon={faVolumeHigh} />
+        </label>
+        <input
+          type="range"
+          className="volume-slider"
           value={volume}
           min={0}
           max={1}
           step={0.01}
           onChange={handleVolumeChange}
-          focusThumbOnChange={false}
-        >
-          <SliderTrack bg="gray.200" h="6px">
-            <SliderFilledTrack bg="pink.500" />
-          </SliderTrack>
-          <SliderThumb boxSize={4} bg="pink.500" />
-        </Slider>
-      </Box>
-    </VStack>
+          aria-label="Volume slider"
+        />
+      </div>
+    </div>
   );
 };
 

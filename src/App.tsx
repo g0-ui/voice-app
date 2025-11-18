@@ -1,19 +1,7 @@
 import { useState } from 'react';
-import {
-  Box,
-  Container,
-  VStack,
-  Heading,
-  Flex,
-  Text,
-  Image,
-  HStack,
-  useColorModeValue,
-} from '@chakra-ui/react';
 import AudioPlayer from './components/AudioPlayer';
 import Playlist from './components/Playlist';
 import RelatedLinks from './components/RelatedLinks';
-import ColorModeToggle from './components/ColorModeToggle';
 
 interface Track {
   id: string;
@@ -76,183 +64,109 @@ function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const bgColor = useColorModeValue('gray.50', 'gray.900');
-  const cardBg = useColorModeValue('white', 'gray.800');
-
   const handleTrackChange = (index: number) => {
     setCurrentTrackIndex(index);
     setIsPlaying(true);
   };
 
   return (
-    <Box minH="100vh" bg={bgColor} py={8} position="relative">
-      <ColorModeToggle />
+    <div className="app-container">
 
-      <Container maxW="container.xl">
-        <VStack gap={8} align="stretch">
-          {/* タイトル */}
-          <Heading
-            as="h1"
-            size="2xl"
-            textAlign="center"
-            bgGradient="linear(to-r, pink.400, pink.600)"
-            bgClip="text"
-            fontWeight="bold"
-          >
-            さにゃえ音声プレーヤー
-          </Heading>
-
-          {/* メインコンテンツ */}
-          <Flex
-            direction={{ base: 'column', lg: 'row' }}
-            gap={8}
-            align="stretch"
-          >
-            {/* 左側カラム */}
-            <VStack flex={1} gap={8} align="stretch">
-              {/* オーディオプレーヤー */}
-              <Box
-                bg={cardBg}
-                borderRadius="2xl"
-                p={{ base: 6, md: 8 }}
-                boxShadow={useColorModeValue(
-                  '0 10px 40px rgba(0, 0, 0, 0.15)',
-                  '0 10px 40px rgba(0, 0, 0, 0.5)'
-                )}
-              >
-                <AudioPlayer
-                  playlist={playlist}
-                  currentTrackIndex={currentTrackIndex}
-                  onTrackChange={handleTrackChange}
-                />
-              </Box>
-
-              {/* 関連リンク */}
-              <Box
-                bg={cardBg}
-                borderRadius="2xl"
-                p={{ base: 6, md: 8 }}
-                boxShadow={useColorModeValue(
-                  '0 10px 40px rgba(0, 0, 0, 0.15)',
-                  '0 10px 40px rgba(0, 0, 0, 0.5)'
-                )}
-              >
-                <RelatedLinks links={relatedLinks} />
-              </Box>
-            </VStack>
-
-            {/* 右側カラム - プレイリスト */}
-            <Box
-              flex={{ base: 1, lg: 0.5 }}
-              minW={{ base: 'auto', lg: '300px' }}
-              bg={cardBg}
-              borderRadius="2xl"
-              p={{ base: 6, md: 8 }}
-              boxShadow={useColorModeValue(
-                '0 10px 40px rgba(0, 0, 0, 0.15)',
-                '0 10px 40px rgba(0, 0, 0, 0.5)'
-              )}
-            >
+      <div className="main-wrapper">
+        <div className="content-wrapper">
+          {/* メインコンテンツ - 3カラムレイアウト */}
+          <div className="main-content">
+            {/* 左側カラム - プレイリスト */}
+            <div className="left-column">
               <Playlist
                 playlist={playlist}
                 currentTrackIndex={currentTrackIndex}
                 onSelectTrack={handleTrackChange}
                 isPlaying={isPlaying}
               />
-            </Box>
-          </Flex>
+            </div>
+
+            {/* 中央カラム - オーディオプレーヤー */}
+            <div className="center-column">
+              <h1 className="app-title">Sanyatify</h1>
+              <AudioPlayer
+                playlist={playlist}
+                currentTrackIndex={currentTrackIndex}
+                onTrackChange={handleTrackChange}
+              />
+            </div>
+
+            {/* 右側カラム - 関連リンク＆ライブラリ情報 */}
+            <div className="right-column">
+              {/* 関連リンク */}
+              <RelatedLinks links={relatedLinks} />
+
+              {/* 使用ライブラリ情報 */}
+              <div className="library-info-box">
+                <h3 className="library-info-title">使用ライブラリ</h3>
+                <ul className="library-list">
+                  <li className="library-list-item">React</li>
+                  <li className="library-list-item">TypeScript</li>
+                  <li className="library-list-item">Vite</li>
+                </ul>
+                <p className="library-footer-text">このアプリはClaude Codeを活用し開発しました</p>
+              </div>
+            </div>
+          </div>
 
           {/* プロフィール */}
-          <Box
-            bg={cardBg}
-            borderRadius="2xl"
-            p={{ base: 6, md: 8 }}
-            boxShadow={useColorModeValue(
-              '0 10px 40px rgba(0, 0, 0, 0.15)',
-              '0 10px 40px rgba(0, 0, 0, 0.5)'
-            )}
-          >
-            <Flex
-              direction={{ base: 'column', md: 'row' }}
-              gap={8}
-              align={{ base: 'stretch', md: 'center' }}
-              justify="space-between"
-            >
+          <div className="profile-section">
               {/* 左側：説明文 */}
-              <VStack align="start" gap={4} flex={1}>
-                <Box>
-                  <Text fontSize="lg" fontWeight="semibold" color="pink.500" mb={2}>
-                    このアプリについて
-                  </Text>
-                  <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
-                    みんなのアイドルさにゃえさんのボイスを思う存分聞けるプレーヤーです。
-                  </Text>
-                </Box>
+              <div className="profile-text">
+                <div>
+                  <h3>このアプリについて</h3>
+                  <p>みんなのアイドルさにゃえさんのボイスを思う存分聞けるプレーヤーです。</p>
+                </div>
 
-                <Box>
-                  <Text fontSize="lg" fontWeight="semibold" color="pink.500" mb={2}>
-                    使用ライブラリ
-                  </Text>
-                  <VStack align="start" gap={1}>
-                    <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
-                      - Chakra UI
-                    </Text>
-                    <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
-                      - React H5 Audio Player
-                    </Text>
-                  </VStack>
-                </Box>
+                <div>
+                  <h3>使用ライブラリ</h3>
+                  <ul>
+                    <li>- React</li>
+                    <li>- TypeScript</li>
+                    <li>- Vite</li>
+                  </ul>
+                </div>
 
-                <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')} fontStyle="italic">
-                  このアプリはClaude Codeを活用し開発しました
-                </Text>
-              </VStack>
+                <p>このアプリはClaude Codeを活用し開発しました</p>
+              </div>
 
               {/* 右側：プロフィール画像 */}
-              <HStack gap={8} justify="center" flexWrap="wrap">
+              <div className="profile-images">
                 {/* さにゃえプロフィール */}
-                <VStack gap={3}>
-                  <Image
+                <div className="profile-card">
+                  <img
                     src={`${import.meta.env.BASE_URL}pic/sanae-profile.png`}
                     alt="さにゃえ"
-                    boxSize="150px"
-                    borderRadius="full"
-                    objectFit="cover"
+                    className="profile-image"
                   />
-                  <VStack gap={1}>
-                    <Text fontSize="md" fontWeight="semibold" color={useColorModeValue('gray.700', 'gray.300')}>
-                      ボイス
-                    </Text>
-                    <Text fontSize="md" color={useColorModeValue('gray.600', 'gray.400')}>
-                      さにゃえ378
-                    </Text>
-                  </VStack>
-                </VStack>
+                  <div className="profile-info">
+                    <span className="profile-role">ボイス</span>
+                    <span className="profile-name">さにゃえ378</span>
+                  </div>
+                </div>
 
                 {/* 作者プロフィール */}
-                <VStack gap={3}>
-                  <Image
+                <div className="profile-card">
+                  <img
                     src={`${import.meta.env.BASE_URL}pic/g0-profile.png`}
                     alt="g0"
-                    boxSize="150px"
-                    borderRadius="full"
-                    objectFit="cover"
+                    className="profile-image"
                   />
-                  <VStack gap={1}>
-                    <Text fontSize="md" fontWeight="semibold" color={useColorModeValue('gray.700', 'gray.300')}>
-                      作者
-                    </Text>
-                    <Text fontSize="md" color={useColorModeValue('gray.600', 'gray.400')}>
-                      g0(ジーゼロ)
-                    </Text>
-                  </VStack>
-                </VStack>
-              </HStack>
-            </Flex>
-          </Box>
-        </VStack>
-      </Container>
-    </Box>
+                  <div className="profile-info">
+                    <span className="profile-role">作者</span>
+                    <span className="profile-name">g0(ジーゼロ)</span>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

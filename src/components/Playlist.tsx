@@ -1,13 +1,5 @@
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Badge,
-  Icon,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { MdPlayArrow, MdMusicNote } from 'react-icons/md';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 
 interface Track {
   id: string;
@@ -28,97 +20,44 @@ const Playlist = ({
   onSelectTrack,
   isPlaying = false,
 }: PlaylistProps) => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.800', 'white');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-
   return (
-    <VStack gap={3} align="stretch" width="100%">
-      <Text
-        fontSize="xl"
-        fontWeight="semibold"
-        color="pink.500"
-        mb={2}
-      >
-        Playlist
-      </Text>
+    <div className="playlist-container">
+      <h2 className="playlist-title">Playlist</h2>
 
-      <Box
-        maxH={{ base: '300px', lg: '500px' }}
-        overflowY="auto"
-        css={{
-          '&::-webkit-scrollbar': {
-            width: '8px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'transparent',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: '#ff6b9d',
-            borderRadius: '4px',
-          },
-          '&::-webkit-scrollbar-thumb:hover': {
-            background: '#e6005f',
-          },
-        }}
-      >
-        <VStack gap={4} align="stretch">
+      <div className="playlist-scroll">
+        <div className="playlist-items">
           {playlist.map((track, index) => {
             const isCurrentTrack = index === currentTrackIndex;
 
             return (
-              <Box
+              <div
                 key={track.id}
-                p={4}
-                cursor="pointer"
-                background={bgColor}
-                borderRadius="lg"
-                border={isCurrentTrack ? '4px solid' : '2px solid'}
-                borderColor={isCurrentTrack ? 'pink.500' : borderColor}
+                className={`playlist-item ${isCurrentTrack ? 'active' : ''}`}
                 onClick={() => onSelectTrack(index)}
               >
-                <HStack justify="space-between">
-                  <HStack gap={3}>
-                    <Icon
-                      as={isCurrentTrack ? MdPlayArrow : MdMusicNote}
-                      boxSize={5}
-                      color="pink.500"
-                    />
-                    <Text
-                      fontWeight={isCurrentTrack ? 'bold' : 'normal'}
-                      color={textColor}
-                      fontSize="md"
-                    >
-                      {track.title}
-                    </Text>
-                  </HStack>
-                  {isCurrentTrack && isPlaying && (
-                    <Badge
-                      colorScheme="pink"
-                      variant="solid"
-                      fontSize="xs"
-                      css={{
-                        animation: 'pulse 1s infinite',
-                        '@keyframes pulse': {
-                          '0%, 100%': {
-                            opacity: 1,
-                          },
-                          '50%': {
-                            opacity: 0.5,
-                          },
-                        },
-                      }}
-                    >
-                      Now Playing
-                    </Badge>
-                  )}
-                </HStack>
-              </Box>
+                <div className="playlist-item-content">
+                  <div className="playlist-item-inner">
+                    <button className="playlist-play-button">
+                      <FontAwesomeIcon icon={isCurrentTrack && isPlaying ? faPause : faPlay} />
+                    </button>
+                    <div className="playlist-item-text">
+                      <span className={`playlist-item-title ${isCurrentTrack ? 'active' : ''}`}>
+                        {track.title}
+                      </span>
+                      {isCurrentTrack && (
+                        <span className="now-playing-badge">
+                          Now Playing
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             );
           })}
-        </VStack>
-      </Box>
-    </VStack>
+        </div>
+      </div>
+    </div>
   );
 };
 

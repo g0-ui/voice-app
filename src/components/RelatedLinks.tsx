@@ -10,7 +10,7 @@ interface RelatedLinksProps {
 const RelatedLinks = ({ links }: RelatedLinksProps) => {
   return (
     <div className="related-links-container">
-      <h2 className="related-links-title">公式サイト</h2>
+      <h2 className="related-links-title">関連リンク</h2>
 
       <div className="related-links-list">
         {links.map((link, index) => (

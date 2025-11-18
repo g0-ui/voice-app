@@ -48,7 +48,7 @@ function App() {
   const relatedLinks = [
     {
       url: 'https://sanae-fanclub.f5.si/',
-      label: 'さにゃえファンクラブ',
+      label: '公式サイト',
     },
     {
       url: 'https://vrchat.com/home/group/grp_2ca4dc8e-761b-4326-9116-acad3aa7e20a',

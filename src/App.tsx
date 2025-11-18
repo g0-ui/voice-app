@@ -113,57 +113,6 @@ function App() {
               </div>
             </div>
           </div>
-
-          {/* プロフィール */}
-          <div className="profile-section">
-              {/* 左側：説明文 */}
-              <div className="profile-text">
-                <div>
-                  <h3>このアプリについて</h3>
-                  <p>みんなのアイドルさにゃえさんのボイスを思う存分聞けるプレーヤーです。</p>
-                </div>
-
-                <div>
-                  <h3>使用ライブラリ</h3>
-                  <ul>
-                    <li>- React</li>
-                    <li>- TypeScript</li>
-                    <li>- Vite</li>
-                  </ul>
-                </div>
-
-                <p>このアプリはClaude Codeを活用し開発しました</p>
-              </div>
-
-              {/* 右側：プロフィール画像 */}
-              <div className="profile-images">
-                {/* さにゃえプロフィール */}
-                <div className="profile-card">
-                  <img
-                    src={`${import.meta.env.BASE_URL}pic/sanae-profile.png`}
-                    alt="さにゃえ"
-                    className="profile-image"
-                  />
-                  <div className="profile-info">
-                    <span className="profile-role">ボイス</span>
-                    <span className="profile-name">さにゃえ378</span>
-                  </div>
-                </div>
-
-                {/* 作者プロフィール */}
-                <div className="profile-card">
-                  <img
-                    src={`${import.meta.env.BASE_URL}pic/g0-profile.png`}
-                    alt="g0"
-                    className="profile-image"
-                  />
-                  <div className="profile-info">
-                    <span className="profile-role">作者</span>
-                    <span className="profile-name">g0(ジーゼロ)</span>
-                  </div>
-                </div>
-              </div>
-          </div>
         </div>
       </div>
     </div>

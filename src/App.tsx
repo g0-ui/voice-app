@@ -96,21 +96,10 @@ function App() {
               />
             </div>
 
-            {/* 右側カラム - 関連リンク＆ライブラリ情報 */}
+            {/* 右側カラム - 関連リンク */}
             <div className="right-column">
               {/* 関連リンク */}
               <RelatedLinks links={relatedLinks} />
-
-              {/* 使用ライブラリ情報 */}
-              <div className="library-info-box">
-                <h3 className="library-info-title">使用ライブラリ</h3>
-                <ul className="library-list">
-                  <li className="library-list-item">React</li>
-                  <li className="library-list-item">TypeScript</li>
-                  <li className="library-list-item">Vite</li>
-                </ul>
-                <p className="library-footer-text">このアプリはClaude Codeを活用し開発しました</p>
-              </div>
             </div>
           </div>
         </div>
